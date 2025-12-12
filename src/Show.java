@@ -1,17 +1,15 @@
 import java.util.ArrayList;
-import java.util.List;
 
 public class Show {
-    private final String title;
-    private final double duration;
-    private final Director director;
-    private final List <Actor> listOfActors;
+    protected String title;
+    protected double duration;
+    protected Director director;
+    protected ArrayList <Actor> listOfActors = new ArrayList<>();
 
     public Show(String title, double duration, Director director) {
         this.title = title;
         this.duration = duration;
         this.director = director;
-        this.listOfActors = new ArrayList<>();
         director.incrementNumberOfShows();
     }
 
@@ -29,14 +27,30 @@ public class Show {
     }
 
     public void  replaceActor(Actor newActor, String surnameToReplace) {
+        ArrayList<Integer> actorIndexes = new ArrayList<>();
+
         for (int i = 0; i < listOfActors.size(); i++) {
-            if (listOfActors.get(i).getSurname().equals(surnameToReplace)) {
-                listOfActors.set(i, newActor);
-                return;
+            if (listOfActors.get(i).surname.equals(surnameToReplace)) {
+                actorIndexes.add(i);
             }
         }
-        System.out.println("Актер с фамилией " + surnameToReplace + " не найден!");
 
+        if (actorIndexes.isEmpty()) {
+            System.out.println("Актер с фамилией " + surnameToReplace + " не найден!");
+            return;
+        }
+
+        if (actorIndexes.size() > 1) {
+            System.out.println("В спектакле " + actorIndexes.size() + " актера с фамилией '" +
+                    surnameToReplace + "'");
+            System.out.println("Заменяем первого найденного актера");
+        }
+
+        int firstActorIndex = actorIndexes.get(0);
+        Actor oldActor = listOfActors.get(firstActorIndex);
+        listOfActors.set(firstActorIndex, newActor);
+
+        System.out.println("Актер " + oldActor + " заменен на " + newActor);
     }
 
     public void printActorsList() {
